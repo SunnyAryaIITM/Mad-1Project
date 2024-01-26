@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome to Admin Dashboard : Mr. {{ session.get('user')['name'] }}</h1>
+    <h2>Add Category</h2>
+    <form action="/add_category" method="post">
+        <label for="category">category name: </label>
+        <input type="text" name="category" id="category">
+        <label for="description">description: </label>
+        <input type="text" name="description" id="description">
+        <input type="submit" value="Add Category">
+    </form>
+    <h2>Add Product</h2>
+    <form action="/add_product" method="post">
+        <label for="product">product name: </label>
+        <input type="text" name="product" id="product">
+        <label for="description">description: </label>
+        <input type="text" name="description" id="description">
+        <label for="quantity">quantity: </label>
+        <input type="text" name="quantity" id="quantity">
+        <label for="price">price: </label>
+        <input type="text" name="price" id="price">
+        <label for="category">category: </label>
+        <select name="category" id="category">
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Add Product">
+    </form>
+
+    <h2>Category with Products</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Products</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.name }}
+                    <form action="/delete_category" method="post"><input type="hidden" name="category_id" value="{{ category.id }}"><input type="submit" value="Delete"></form>
+                    <a href="/edit_category/{{ category.id }}"><input type="submit" value="Edit"></a>
+                </td>
+                <td>
+                    {% for product in category.products %}
+                        <p>{{ product.name }}</p>
+                        <form action="/delete_product" method="post"><input type="hidden" name="product_id" value="{{ product.id }}"><input type="submit" value="Delete"></form>
+                        <a href="/edit_product/{{ product.id }}"><input type="submit" value="Edit"></a>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}

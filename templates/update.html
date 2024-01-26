@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if update_type == "product" %}
+<h2>Update Product</h2>
+<form action="/edit_product/{{ product.id }}" method="post">
+    <label for="product">product name: </label>
+    <input type="text" value="{{ product.name }}" name="product" id="product">
+    <label for="description">description: </label>
+    <input type="text" value="{{ product.description }}" name="description" id="description">
+    <label for="quantity">quantity: </label>
+    <input type="text" value="{{ product.quantity }}" name="quantity" id="quantity">
+    <label for="price">price: </label>
+    <input type="text" value="{{ product.price }}" name="price" id="price">
+    <label for="category">category: </label>
+    <select name="category" id="category">
+        {% for category in categories %}
+            <option value="{{ category.id }}" {% if category.id == product.category.id %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="Update Product">
+</form>
+{% else %}
+<h2>Update Category</h2>
+    <form action="/edit_category/{{ category.id }}" method="post">
+        <label for="category">category name: </label>
+        <input type="text" value="{{ category.name }}" name="category" id="category">
+        <label for="description">description: </label>
+        <input type="text" value="{{ category.description }}" name="description" id="description">
+        <input type="submit" value="Update Category">
+    </form>
+{% endif %}
+
+{% endblock content %}

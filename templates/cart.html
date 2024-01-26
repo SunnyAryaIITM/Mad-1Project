@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome to Cart</h1>
+    <a href="/"><input type="submit" value="Go Back"></a>
+    <a href="/logout"><input type="submit" value="Logout"></a>
+    <a href="/order"><input type="submit" value="Place order"></a>
+    {% if carts | length == 0 %}
+        <p>Cart is empty</p>
+    {% else %}
+        {% for cart in carts %}
+            {% for product in products %}
+                {% if cart.product_id == product.id %}
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <p>{{ product.price }}</p>
+                    <p>Quantity: {{ cart.quantity }}</p>
+                    <a href="/delete-from-cart/{{ cart.id }}"><input type="submit" value="Delete"></a>
+                {% endif %}                
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+{% endblock content %}

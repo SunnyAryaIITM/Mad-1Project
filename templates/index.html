@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block link_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock link_css %}
+
+{% block content %}
+<div>
+    {% if session.get('user') %}
+    <h1>Welcome {{ session.get('user')['name'] }}</h1>
+    <a href="/cart"><input type="submit" value="Cart"></a>
+    <a href="/logout"><input type="submit" value="Logout"></a>
+    {% else %}
+    <h1>Welcome to Mad-1Project</h1>
+    <a href="/login"><input type="submit" value="Login"></a>
+    <a href="/register"><input type="submit" value="Register"></a>
+    {% endif %}
+    {% for category in categories %}
+    <h1>{{ category.name }}</h1>
+    <div class="product-container">
+        {% for product in category.products %}
+
+        <div class="product-card">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p>{{ product.price }}</p>
+            {% if session.get('user') %}
+            {% if product.quantity > 0 %}
+            <form action="/add-to-cart" method="post">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <input type="submit" value="Add to Cart">
+                <input type="number" name="quantity" value="1">
+            </form>
+            {% else %}
+            <p>Out of Stock</p>
+            {% endif %}
+            {% else %}
+            <a href="/login"><input type="submit" value="Add to Cart"></a>
+            <input type="number" name="quantity" value="1">
+            {% endif %}
+        </div>
+
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
